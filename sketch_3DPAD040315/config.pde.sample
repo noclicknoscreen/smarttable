@@ -1,0 +1,18 @@
+/*
+ Fichier de configuration pour la SamrtTable
+*/
+// Paramètre du serveur de diffusion
+String OSC_LISTENER_DIFFUSION_ADDR = "192.168.43.144";
+int OSC_LISTENER_DIFFUSION_PORT = 12000;
+
+// Paramètre du client Viewer
+String OSC_LISTENER_VIEWER_ADDR = "192.168.43.144";
+int OSC_LISTENER_VIEWER_PORT = 8040;
+
+// Etat du de la presentation
+String[] prez = { "PRESENTATION", "VISITE VIRTUELLE", "OBJETS 3D" };
+
+// Timeout de retour sur le mode présentation en millisecondes
+int returnTimeout = 3000;
+
+
