@@ -15,29 +15,29 @@ void setup()
   println("3Dpad> ");
   StatusLine= "3DPad> please CONNECT";
   setupControl();
-  oscSetup();
+  smartTableSetup();
 } 
 
 void draw()
 {
   background(0);
   noStroke();
-  fill(0, 255, 0);
-  if (z<250)
-   {
-    if (z > 40) ellipse(x, y, z, z);
-    else ellipse(x, y, 40, 40);
-    
-    fill(153);
-    ellipse(dynX, dynY, 10, 10);
-    
-    stroke(255);
-    line(dynX,dynY,x,dynY);
-    line(dynX,dynY,dynX,y);
-  }
+//  fill(0, 255, 0);
+//  if (z<250)
+//   {
+//    if (z > 40) ellipse(x, y, z, z);
+//    else ellipse(x, y, 40, 40);
+//    
+//    fill(153);
+//    ellipse(dynX, dynY, 10, 10);
+//    
+//    stroke(255);
+//    line(dynX,dynY,x,dynY);
+//    line(dynX,dynY,dynX,y);
+//  }
   fill(255);
   text(StatusLine,10,80);
-  osc_transfert(detectedMotion);
+  decideWhatToDo(detectedMotion);
 }
 
 void keyPressed() 
