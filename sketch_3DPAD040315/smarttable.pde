@@ -8,6 +8,7 @@ int current_state_index = 0;
 int precendent_state_index = 0;
 int val = 0;
 int lastMoveTime;
+int lastDepth = 300;
 
 
 void smartTableSetup() {
@@ -51,6 +52,14 @@ void viewer3DTransfert(String addressPattern, String move) {
     oscSend(viewer3D, viewer3DRemoteLocation, gestureMsg);
     precedentMove = move;
     lastMoveTime = millis();
+  }
+  
+  // Envoyer aussi la profondeur
+  if (lastDepth != z) {
+    OscMessage depthMsg = new OscMessage("/" + addressPattern + "/depth");
+    depthMsg.add(z); /* add an int to the osc message */
+    oscSend(viewer3D, viewer3DRemoteLocation, depthMsg);
+    lastDepth = z;
   }
 }
 
