@@ -1,72 +1,130 @@
-/*--------------------------------------------------------------
-  Description:  Autodetect Arduino port connection
-  Date:         1 November 2012
-  Author:       W.A. Smith, http://startingelectronics.org
---------------------------------------------------------------*/
+
+
 import processing.serial.*;
 
-Serial myPort;                // for serial port
-int num_ports;
-boolean device_detected = false;
-String[] port_list;
-String detected_port = "";
+Serial myPort;
+int portIndex=-1;
+int counterTrame = 0;
+int automateReceive = 0;
+private String receivedString;
+String rawValues;
+String detectedMotion = "";
 
-void serialSetup() {
-    // get the number of detected serial ports
-    num_ports = Serial.list().length;
-    // save the current list of serial ports
-    port_list = new String[num_ports];
-    for (int i = 0; i < num_ports; i++) {
-        port_list[i] = Serial.list()[i];
-    }
+
+void serialEvent(Serial p)
+{
+  if (myPort.available() > 0)
+  {
+    char inByte = myPort.readChar();
+    processSerial(inByte);
+  }
 }
 
-void serialDetection(){
-  // see if Arduino or serial device was plugged in
-  if (!device_detected) {
-    if ((Serial.list().length > num_ports)) {
-      device_detected = true;
-      boolean str_match = false;
-      if (num_ports == 0) {
-        detected_port = Serial.list()[0];
-      }
-      else {
-        // go through the current port list
-        for (int i = 0; i < Serial.list().length; i++) {
-          // go through the saved port list
-          for (int j = 0; j < num_ports; j++) {
-            if (Serial.list()[i].equals(port_list[j])) {
-                break;
-            }
-            if (j == (num_ports - 1)) {
-                str_match = true;
-                detected_port = Serial.list()[i];
-                Connect(i);
-            }
-          }
-        }
-      }
-      // Update port list : One more port
-      println("Arduino was plugged at " + detected_port + ".");
-      serialSetup();
-    }
-    else {
-      if ((Serial.list().length < num_ports)) {
-        println("Arduino was unplugged...");
-        // Update port list : one less port
-        serialSetup();
-        device_detected = false;
-      }
-      else {
-       // Waiting for Arduino plug/deplug...
-      }
-    }
-  }
-} 
+void processSerial(char chartmp) {
 
-public void Connect(int portIndex) {
-  myPort = new Serial(this, Serial.list()[portIndex], 115200);
-  myPort.clear();
-  println("Connecting to " + Serial.list()[portIndex]);
-  myPort.write('S');
+  if( chartmp == '.') 
+  {
+    print(".");
+    StatusLine+=".";
+  }
+ 
+  switch(automateReceive) {
+  case 0:
+    if (chartmp == '>') automateReceive = 1; 
+    break;
+    
+  case 1:
+    if (chartmp == 'A') automateReceive = 2; 
+    if (chartmp == 'G') automateReceive = 3; 
+    if (chartmp == 'V') {
+      automateReceive = 4;
+      counterTrame = 0;
+      receivedString = "";
+    }
+  break;
+    
+   case 2: //etats de l'automate 3Dpad
+     print("\n\rState: "); 
+     StatusLine="State: ";
+     switch(chartmp)
+     {
+           case '0':
+           case '1':
+                     print("Calibration..");
+                     StatusLine+="Calibration..";
+                     break;
+           case '2':
+                     print("Setup ");
+                     StatusLine+="Setup..";
+                     break;
+           case '3':
+                     print("Run");
+                     StatusLine+="Run";
+                     break;
+     }
+     myPort.write('V');   
+     automateReceive = 0;
+   break;
+    
+  case 3: //gestures
+     print("\n\rGest: "); 
+     StatusLine="Gest: ";
+     detectGesture(chartmp);
+     automateReceive = 0;
+     print(detectedMotion);    
+     
+  break;
+  case 4:
+    receivedString += chartmp;
+    counterTrame++;
+    if (counterTrame == 60) {
+      rawValues=receivedString;
+      calculateCoord();
+      
+      //println(rawValues);
+      automateReceive = 0;
+    }
+    break;
+  }
+}
+
+void detectGesture(char chartmp) {
+  
+  switch(chartmp) {
+  case '0':
+    detectedMotion = "OUT";
+    break;
+  case '1':
+    detectedMotion = "IN";
+    
+    break;
+  case '2':
+    detectedMotion = "RIGHT";
+    
+    break;
+  case '3':
+    detectedMotion = "LEFT";
+    
+    break;
+  case '4':
+    detectedMotion = "UP";
+   
+    break;
+  case '5':
+    detectedMotion = "DOWN";
+    
+    break;
+  case '6':
+    //detectedMotion = "TurnL : "+ turnL;
+    detectedMotion = "TurnL";
+    break;
+  case '7':
+    //detectedMotion = "TurnR : " + turnR;
+    detectedMotion = "TurnR";
+    break;
+  case '8':
+    detectedMotion = "PUSH";
+    break;
+  }
+   StatusLine+=detectedMotion;
 }

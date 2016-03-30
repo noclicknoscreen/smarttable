@@ -10,9 +10,8 @@ void oscSend(OscP5 remote, NetAddress address, OscMessage msg) {
 }
 
 
-/* incoming osc message are forwarded to the oscEvent method. 
+/* incoming osc message are forwarded to the oscEvent method. */
 void oscEvent(OscMessage theOscMessage) {
   theOscMessage.print();
 }
 
-*/

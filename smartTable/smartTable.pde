@@ -1,36 +1,48 @@
-PFont fnt;                      // for font
+/*
+3DPAD DEMO SOFTWARE
+Based on an original idea from www.ootsidebox.com
+*/
 
-void setup() {
-    size(400, 200);                         // size of application window
-    background(0);                          // black background
-    fnt = createFont("Arial", 16, true);    // font displayed in window
-    serialSetup();
-}
+PFont Font;
+String StatusLine;
+
+void setup()
+{
+  size(600, 600);
+  if (frame != null) frame.setResizable(true);
+  Font = loadFont("ArialMT-24.vlw");
+  textFont(Font);
+  println("3Dpad> ");
+  StatusLine= "3DPad> please CONNECT";
+  setupControl();
+  smartTableSetup();
+} 
 
 void draw()
 {
   background(0);
-  if (!device_detected) {
-    displayAutodetectionInstructions();
-    serialDetection();
-  }
-  else {
-    displayDetectedPort();
-  }
+  noStroke();
+//  fill(0, 255, 0);
+//  if (z<250)
+//   {
+//    if (z > 40) ellipse(x, y, z, z);
+//    else ellipse(x, y, 40, 40);
+//    
+//    fill(153);
+//    ellipse(dynX, dynY, 10, 10);
+//    
+//    stroke(255);
+//    line(dynX,dynY,x,dynY);
+//    line(dynX,dynY,dynX,y);
+//  }
+  fill(255);
+  text(StatusLine,10,80);
+  decideWhatToDo(detectedMotion);
 }
 
-void displayAutodetectionInstructions() {
-    // display instructions to user
-    textFont(fnt, 14);
-    text("Please disconnect and reconnect Arduino...", 20, 30);
-}
-
-void displayDetectedPort() {
-    // calculate and display serial port name
-    if (device_detected) {
-        text("Device detected:", 20, 110);
-        textFont(fnt, 18);
-        text(detected_port, 20, 150);
-        delay(3000);
-    }
+void keyPressed() 
+{
+  print("\n\rKeyboard -> "+key);
+  print("\n\r");
+  myPort.write(key);
 }
