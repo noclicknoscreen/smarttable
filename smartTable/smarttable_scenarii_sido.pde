@@ -55,7 +55,7 @@ void viewer3DTransfert(String addressPattern, String move) {
   }
   
   // Envoyer aussi la profondeur
-  if (lastDepth != z) {
+  if (lastDepth != z && z <= 300) {
     OscMessage depthMsg = new OscMessage("/" + addressPattern + "/depth");
     depthMsg.add(z); /* add an int to the osc message */
     oscSend(viewer3D, viewer3DRemoteLocation, depthMsg);
