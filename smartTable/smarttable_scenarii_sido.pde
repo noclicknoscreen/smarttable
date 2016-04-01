@@ -40,6 +40,10 @@ String filterGesture(String move, String[] skip) {
 
 // Pilotage du viewer Visite virtuelle
 void viewer3DTransfert(String addressPattern, String move) {
+  // transformer tous les "OUT" en "STOP" car OUT est un mot réservé dans le viewer.
+  if (move == "OUT") {
+    move = "STOP";
+  }
   val = 1;
   if (precedentMove != move && move != "") {
     OscMessage gestureMsg = new OscMessage("/" + addressPattern + "/" + move.toLowerCase());
@@ -101,16 +105,13 @@ void decideWhatToDo(String move) {
   if (move == "TurnR" && current_state_index == 1) {
     setState(move, 2);
   }
-  // transformer tous les "OUT" en "STOP" car OUT est un mot réservé dans le viewer.
-  if (move == "OUT") {
-    move = "STOP";
-  }
+
   // Rediriger sur le bon mode.
   switch(current_state_index) {
   case 0: // "PRESENTATION":
     break;
   case 1: //"VISITEVIRTUELLE":
-    String skippedMoveVV[] = { "IN", "OUT", "TurnR", "TurnL", "PUSH" };
+    String skippedMoveVV[] = { "IN", "TurnR", "TurnL", "PUSH" };
     viewer3DTransfert("cam", filterGesture(move, skippedMoveVV));
     break;
   case 2: //"OBJETS3D":
