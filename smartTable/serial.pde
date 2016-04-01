@@ -1,5 +1,6 @@
-
-
+// -------------------------------------------------------------------
+// Fonction de gestion de la liaison série avec l'arduino
+// -------------------------------------------------------------------
 import processing.serial.*;
 
 Serial myPort;
@@ -12,6 +13,9 @@ String detectedMotion = "";
 int lastMoveTime;
 
 
+// -------------------------------------------------------------------
+// Callback des Event provenant de la liaison série.
+// -------------------------------------------------------------------
 void serialEvent(Serial p)
 {
   if (myPort.available() > 0)
@@ -21,6 +25,9 @@ void serialEvent(Serial p)
   }
 }
 
+// -------------------------------------------------------------------
+// Gestion du protocole du 3D Pad / Arduino (ootsidebox code)
+// -------------------------------------------------------------------
 void processSerial(char chartmp) {
 
   if( chartmp == '.') 
@@ -89,6 +96,9 @@ void processSerial(char chartmp) {
   }
 }
 
+// -------------------------------------------------------------------
+// Fonction de caractérisation des gestes
+// -------------------------------------------------------------------
 void detectGesture(char chartmp) {
   
   switch(chartmp) {

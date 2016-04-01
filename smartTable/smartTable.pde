@@ -1,14 +1,17 @@
-/*
-3DPAD DEMO SOFTWARE
-Based on an original idea from www.ootsidebox.com
-*/
-
+// -------------------------------------------------------------------
+// SmartTable
+// Strongly Inspired of 3DPAD DEMO SOFTWARE 
+// Based on an original idea from www.ootsidebox.com
+// -------------------------------------------------------------------
 PFont Font;
 String StatusLine;
 String StatusLineOsc = "";
 String StatusLineNbOsc = "";
 String StatusLineMode = "";
 
+// -------------------------------------------------------------------
+// Setup Processing
+// -------------------------------------------------------------------
 void setup()
 {
   size(600, 600);
@@ -21,6 +24,9 @@ void setup()
   smartTableSetup();
 } 
 
+// -------------------------------------------------------------------
+// Boucle Draw processing
+// -------------------------------------------------------------------
 void draw()
 {
   background(0);
@@ -46,9 +52,13 @@ void draw()
   text(StatusLineOsc,10,100);
   fill(0,255,100);
   text(StatusLineNbOsc,10,120);
-  decideWhatToDo(detectedMotion);
+  // Controleur de la smarttable
+  smartTableController(detectedMotion);
 }
 
+// -------------------------------------------------------------------
+// gestion des entrée clavier
+// -------------------------------------------------------------------
 void keyPressed() 
 {
   print("\n\rKeyboard -> "+key);

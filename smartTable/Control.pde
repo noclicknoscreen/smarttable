@@ -1,11 +1,15 @@
-
-
+// -------------------------------------------------------------------
+// Formulaire de contrôle : choix du port Arduino, commandes d'init
+// -------------------------------------------------------------------
 import processing.serial.*;
 import controlP5.*;
 ControlP5 cp5;
 DropdownList dSerial;
 Button bCalibrate, bSetup;
 
+// -------------------------------------------------------------------
+// Setup des éléments d'IHM
+// -------------------------------------------------------------------
 void setupControl() {
   cp5 = new ControlP5(this);
 
@@ -31,6 +35,9 @@ void setupControl() {
  
 }
 
+// -------------------------------------------------------------------
+//  Callback des évents de l'IHM
+// -------------------------------------------------------------------
 void controlEvent(ControlEvent theEvent) {
   if (theEvent.isGroup()) {
 
@@ -45,6 +52,9 @@ void controlEvent(ControlEvent theEvent) {
   }
 }
 
+// -------------------------------------------------------------------
+// Fonction de connexion sur le bon port.
+// -------------------------------------------------------------------
 public void Connect(int portIndex) {
       if (portIndex!= -1) myPort.stop();
     
@@ -54,10 +64,16 @@ public void Connect(int portIndex) {
       StatusLine="Connecting to " + Serial.list()[portIndex];
 }
 
+// -------------------------------------------------------------------
+// Envoie de la commande de calibration du 3D PAd à L'Arduino
+// -------------------------------------------------------------------
 public void Calibrate(int value) {
 	myPort.write('A');
 }
 
+// -------------------------------------------------------------------
+// Envoie de la commande d'exécution du setup à L'Arduino
+// -------------------------------------------------------------------
 public void Setup(int value) {
 	myPort.write('S');
 }

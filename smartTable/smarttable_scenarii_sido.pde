@@ -11,16 +11,23 @@ int precendent_state_index = 0;
 int val = 0;
 int lastDepth = 300;
 
+// Pour le message osc : /layer3/video/...
 String resolumeLayer = "layer3";
 String resolumePrefix = "video";
 String resolumeAction = "";
 
+// -------------------------------------------------------------------
+// Setup des scenarii smarttable
+// appelé par le setup général de processing
+// -------------------------------------------------------------------
 void smartTableSetup() {
-  oscSetup();
   oscObjectsSetup();
   setState("OUT", 0);
 }
 
+// -------------------------------------------------------------------
+// Déclaration des objets OSC
+// -------------------------------------------------------------------
 private void oscObjectsSetup() {
   // Setup du listener du viewer
   viewer3D = new OscP5(this,OSC_LISTENER_VIEWER_PORT);
@@ -43,7 +50,9 @@ String filterGesture(String move, String[] skip) {
   return move;
 }
 
+// -------------------------------------------------------------------
 // Pilotage du viewer Visite virtuelle
+// -------------------------------------------------------------------
 void viewer3DTransfert(String addressPattern, String move) {
   // transformer tous les "OUT" en "STOP" car OUT est un mot réservé dans le viewer.
   if (move == "OUT") {
@@ -66,9 +75,10 @@ void viewer3DTransfert(String addressPattern, String move) {
     lastDepth = z;
   }
 }
-
+// -------------------------------------------------------------------
 // Pilotage des objets 3D
-void diffServerTransfert(String addressPattern, String move) {
+// -------------------------------------------------------------------
+void resolumeTransfert(String addressPattern, String move) {
   // Interpréter ici les mouvements pour Resolume
    if (move == "LEFT" ) {
       resolumeAction = "direction";
@@ -96,7 +106,9 @@ void diffServerTransfert(String addressPattern, String move) {
   } 
 }
 
-// Faire évoluer l'état de la navigation dans les 3 scénarii
+// -------------------------------------------------------------------
+// Gestion de l'état de la navigation dans les 3 scénarii
+// -------------------------------------------------------------------
 void setState(String move, int idx) {
   precendent_state_index = current_state_index;
   current_state_index = idx;
@@ -105,12 +117,16 @@ void setState(String move, int idx) {
   StatusLineMode = "\nMode : " + prez[current_state_index];
 }
 
+// -------------------------------------------------------------------
+// Controleur d'action en fonction de mouvements
+//
 // Voir comment il faut envoyer les messages osc et à qui ?
 // Sur "TurnR" 
 // on passe du mode 1 au mode 2.
 // Sur "TurnL" on passe du mode 2 au mode 1.
 // Sur un timeout On retour à la présentation (mode 0)
-void decideWhatToDo(String move) {
+// -------------------------------------------------------------------
+void smartTableController(String move) {
   // Si on a un timeout, on revient au mode d'attent (mode 0, présentation)
   if(millis() - lastMoveTime >= returnTimeout && (current_state_index != 0)) {
     setState(move, 0);
@@ -131,6 +147,7 @@ void decideWhatToDo(String move) {
   // Rediriger sur le bon mode.
   switch(current_state_index) {
   case 0: // "PRESENTATION":
+    // rien à faire, ça défile tout seul
     break;
   case 1: //"VISITEVIRTUELLE":
     String skippedMoveVV[] = { "IN", "TurnR", "TurnL", "PUSH" };
@@ -138,7 +155,7 @@ void decideWhatToDo(String move) {
     break;
   case 2: //"OBJETS3D":
     String skippedMove3D[] = { "IN", "OUT", "TurnR", "TurnL", "PUSH" };
-    diffServerTransfert(resolumePrefix, filterGesture(move, skippedMove3D));
+    resolumeTransfert(resolumePrefix, filterGesture(move, skippedMove3D));
     break;
   }
 }

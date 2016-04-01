@@ -1,10 +1,14 @@
-
-
+// -------------------------------------------------------------------
+// Fonctions de calcul des coordonnées issues du 3D pad
+// -------------------------------------------------------------------
 int x, y;
 int z=300;
 int dynX, dynY, dynZ;
 int turnL, turnR;
 
+// -------------------------------------------------------------------
+//  coordonnées x,y,z zt nb de tours, et composantes x/y du mouvement
+// -------------------------------------------------------------------
 void calculateCoord() {
            
       int rawx = int(rawValues.substring(20, 24));

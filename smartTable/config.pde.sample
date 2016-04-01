@@ -1,6 +1,7 @@
-/*
- Fichier de configuration pour la SamrtTable
-*/
+// -------------------------------------------------------------------
+// Fichier de configuration pour la SmartTable
+// -------------------------------------------------------------------
+
 // Paramètre du serveur de diffusion
 String OSC_LISTENER_DIFFUSION_ADDR = "localhost";
 int OSC_LISTENER_DIFFUSION_PORT = 12000;
@@ -13,5 +14,5 @@ int OSC_LISTENER_VIEWER_PORT = 8040;
 String[] prez = { "PRESENTATION", "VISITE VIRTUELLE", "OBJETS 3D" };
 
 // Timeout de retour sur le mode présentation en millisecondes
-int returnTimeout = 5000;
+int returnTimeout = 10000;
 
