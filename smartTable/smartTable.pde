@@ -5,6 +5,9 @@ Based on an original idea from www.ootsidebox.com
 
 PFont Font;
 String StatusLine;
+String StatusLineOsc = "";
+String StatusLineNbOsc = "";
+String StatusLineMode = "";
 
 void setup()
 {
@@ -37,6 +40,12 @@ void draw()
 //  }
   fill(255);
   text(StatusLine,10,80);
+  fill(255,0,100);
+  text(StatusLineMode,10,80);
+  fill(255,100,0);
+  text(StatusLineOsc,10,100);
+  fill(0,255,100);
+  text(StatusLineNbOsc,10,120);
   decideWhatToDo(detectedMotion);
 }
 
