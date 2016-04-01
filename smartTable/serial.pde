@@ -9,6 +9,7 @@ int automateReceive = 0;
 private String receivedString;
 String rawValues;
 String detectedMotion = "";
+int lastMoveTime;
 
 
 void serialEvent(Serial p)
@@ -127,4 +128,5 @@ void detectGesture(char chartmp) {
     break;
   }
    StatusLine+=detectedMotion;
+   lastMoveTime = millis();
 }
