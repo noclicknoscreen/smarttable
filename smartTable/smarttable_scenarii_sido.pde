@@ -1,3 +1,5 @@
+import java.util.Map;
+
 OscP5 viewer3D;
 OscP5 diffServer;
 NetAddress viewer3DRemoteLocation;
@@ -9,6 +11,9 @@ int precendent_state_index = 0;
 int val = 0;
 int lastDepth = 300;
 
+String resolumeLayer = "layer3";
+String resolumePrefix = "video";
+String resolumeAction = "";
 
 void smartTableSetup() {
   oscSetup();
@@ -62,12 +67,28 @@ void viewer3DTransfert(String addressPattern, String move) {
   }
 }
 
-// Pilotage du viewer Visite virtuelle
+// Pilotage des objets 3D
 void diffServerTransfert(String addressPattern, String move) {
-  val = 1;
+  // Interpréter ici les mouvements pour Resolume
+   if (move == "LEFT" ) {
+      resolumeAction = "direction";
+      val = 0;
+   }
+   if (move == "RIGHT" ) {
+      resolumeAction = "direction";
+      val = 1;
+   }
+   if (move == "UP" ) {
+      resolumeAction = "col";
+      val = 1;
+   }
+   if (move == "DOWN" ) {
+      resolumeAction = "col";
+      val = 0;
+   }
   if (precedentMove != move && move != "") {
     /* in the following different ways of creating osc messages are shown by example */
-    OscMessage gestureMsg = new OscMessage("/" + addressPattern + "/" + move.toLowerCase());
+    OscMessage gestureMsg = new OscMessage("/" + addressPattern + "/" + resolumeLayer +  "/" + resolumePrefix + "/" + resolumeAction);
     gestureMsg.add(val); /* add an int to the osc message */
     // Envoie du message OSC au viewer3D
     oscSend(diffServer, diffServerRemoteLocation, gestureMsg);
@@ -85,7 +106,8 @@ void setState(String move, int idx) {
 }
 
 // Voir comment il faut envoyer les messages osc et à qui ?
-// Sur "TurnR" on passe du mode 1 au mode 2.
+// Sur "TurnR" 
+// on passe du mode 1 au mode 2.
 // Sur "TurnL" on passe du mode 2 au mode 1.
 // Sur un timeout On retour à la présentation (mode 0)
 void decideWhatToDo(String move) {
@@ -116,7 +138,7 @@ void decideWhatToDo(String move) {
     break;
   case 2: //"OBJETS3D":
     String skippedMove3D[] = { "IN", "OUT", "TurnR", "TurnL", "PUSH" };
-    diffServerTransfert("3DObj", filterGesture(move, skippedMove3D));
+    diffServerTransfert(resolumePrefix, filterGesture(move, skippedMove3D));
     break;
   }
 }
