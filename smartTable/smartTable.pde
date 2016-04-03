@@ -52,6 +52,10 @@ void draw()
   text(StatusLineOsc,10,100);
   fill(0,255,100);
   text(StatusLineNbOsc,10,120);
+  
+  fill(124,190,47);
+  text("clip" + clipIndex,10,170);
+
   // Controleur de la smarttable
   smartTableController(detectedMotion);
 }

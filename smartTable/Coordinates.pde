@@ -5,16 +5,18 @@ int x, y;
 int z=300;
 int dynX, dynY, dynZ;
 int turnL, turnR;
+int rawx, rawy, rawz;
+int rawDynX;
 
 // -------------------------------------------------------------------
 //  coordonnées x,y,z zt nb de tours, et composantes x/y du mouvement
 // -------------------------------------------------------------------
 void calculateCoord() {
            
-      int rawx = int(rawValues.substring(20, 24));
-      int rawy = int(rawValues.substring(25, 29));
-      int rawz = int(rawValues.substring(30, 34));
-      int rawDynX = int(rawValues.substring(35, 39));
+      rawx = int(rawValues.substring(20, 24));
+      rawy = int(rawValues.substring(25, 29));
+      rawz = int(rawValues.substring(30, 34));
+      rawDynX = int(rawValues.substring(35, 39));
       int rawDynY = int(rawValues.substring(40, 44));
       int rawDynZ = int(rawValues.substring(45, 49));
       
