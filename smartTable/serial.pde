@@ -75,11 +75,11 @@ void processSerial(char chartmp) {
    break;
     
   case 3: //gestures
-     print("\n\rGest: "); 
+     //print("\n\rGest: "); 
      StatusLine="Gest: ";
      detectGesture(chartmp);
      automateReceive = 0;
-     print(detectedMotion);    
+     //print(detectedMotion);    
      
   break;
   case 4:
