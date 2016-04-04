@@ -3,10 +3,15 @@
 // -------------------------------------------------------------------
 
 // Paramètre du serveur de diffusion
+//String OSC_LISTENER_DIFFUSION_ADDR = "192.168.1.58";
 String OSC_LISTENER_DIFFUSION_ADDR = "localhost";
-int OSC_LISTENER_DIFFUSION_PORT = 12000;
+int OSC_LISTENER_DIFFUSION_PORT = 7000;
+// Port de message retour
+String OSC_LOCALHOST_ADDR = "localhost";
+int OSC_LOCALHOST_PORT = 7001;
 
 // Paramètre du client Viewer
+//String OSC_LISTENER_VIEWER_ADDR = "192.168.1.58";
 String OSC_LISTENER_VIEWER_ADDR = "localhost";
 int OSC_LISTENER_VIEWER_PORT = 8040;
 
@@ -15,4 +20,5 @@ String[] prez = { "PRESENTATION", "VISITE VIRTUELLE", "OBJETS 3D" };
 
 // Timeout de retour sur le mode présentation en millisecondes
 int returnTimeout = 10000;
+
 
