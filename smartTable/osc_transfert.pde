@@ -31,5 +31,6 @@ void oscEvent(OscMessage theOscMessage) {
     
   }
   StatusLineNbOsc ="\nReceived OSC messages : " + msg_sent;
+  StatusClip = "clip"+clipIndex;
 }
 

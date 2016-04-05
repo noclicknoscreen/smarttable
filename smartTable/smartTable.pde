@@ -8,6 +8,7 @@ String StatusLine;
 String StatusLineOsc = "";
 String StatusLineNbOsc = "";
 String StatusLineMode = "";
+String StatusClip = "";
 
 // -------------------------------------------------------------------
 // Setup Processing
@@ -54,8 +55,9 @@ void draw()
   text(StatusLineNbOsc,10,120);
   
   fill(124,190,47);
-  text("clip" + clipIndex,10,170);
-
+  //text("clip" + clipIndex,10,170);
+  text(StatusClip,10,170);
+  
   // Controleur de la smarttable
   smartTableController(detectedMotion);
 }

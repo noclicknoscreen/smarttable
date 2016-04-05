@@ -65,6 +65,14 @@ String filterGesture(String move, String[] skip) {
 // Pilotage du viewer Visite virtuelle
 // -------------------------------------------------------------------
 void viewer3DTransfert(String addressPattern, String move) {
+  // Mettre soit une visite  soit l'autre
+  int clip = (turnL%2) + 1;
+  if (clip < 0) {
+    clip = 1;
+  }
+  StatusClip = "clip"+clip;
+  resolumeSend("layer2/clip" + clip + "/connect", 1);
+  resolumeSend("layer2/clip" + clip + "/preview", 1);
   // transformer tous les "OUT" en "STOP" car OUT est un mot réservé dans le viewer.
   if (move == "OUT") {
     move = "STOP";
@@ -84,6 +92,7 @@ void viewer3DTransfert(String addressPattern, String move) {
     OscMessage depthMsg = new OscMessage("/" + addressPattern + "/depth");
     depthMsg.add(z); /* add an int to the osc message */
     oscSend(viewer3D, viewer3DRemoteLocation, depthMsg);
+    oscSend(viewer3D2, viewer3D2RemoteLocation, depthMsg);
     lastDepth = z;
   }
 }
@@ -183,7 +192,7 @@ void smartTableController(String move) {
         resolumeSend("layer2/select", 1);
       }
       precedent_state_index = current_state_index;      
-    }
+    }    
     // TurnR le mode suivant 1 -> 2
     if (move == "TurnR" && current_state_index == 1) {
       // OBJETS 3D
@@ -202,7 +211,7 @@ void smartTableController(String move) {
   case 0: //PRESENTATION : 
    break;
   case 1: //"VISITEVIRTUELLE":
-    String skippedMoveVV[] = { "IN", "TurnR", "TurnL", "PUSH" };
+    String skippedMoveVV[] = { "IN", "TurnR", "PUSH" };  // TurnL est utile pour la 
     // Piloter le viewer
     viewer3DTransfert("cam", filterGesture(move, skippedMoveVV));
     break;
