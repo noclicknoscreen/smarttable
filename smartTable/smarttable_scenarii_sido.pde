@@ -1,9 +1,9 @@
 import java.util.Map;
 
-OscP5 viewer3D;
+OscP5 viewer3D, viewer3D2;
 OscP5 diffServer;
 OscP5 diffServerBackMsg;
-NetAddress viewer3DRemoteLocation;
+NetAddress viewer3DRemoteLocation, viewer3D2RemoteLocation;
 NetAddress diffServerRemoteLocation;
 NetAddress diffServerBackMsgRemoteLocation;
 
@@ -34,9 +34,12 @@ void smartTableSetup() {
 // Déclaration des objets OSC
 // -------------------------------------------------------------------
 private void oscObjectsSetup() {
-  // Setup du listener du viewer
+  // Setup du listener du viewer 1
   viewer3D = new OscP5(this,OSC_LISTENER_VIEWER_PORT);
   viewer3DRemoteLocation = new NetAddress(OSC_LISTENER_VIEWER_ADDR,OSC_LISTENER_VIEWER_PORT);
+  // Setup du listener du viewer 2
+  viewer3D2 = new OscP5(this,OSC_LISTENER_VIEWER2_PORT);
+  viewer3D2RemoteLocation = new NetAddress(OSC_LISTENER_VIEWER2_ADDR,OSC_LISTENER_VIEWER2_PORT);
   // Setup du listener de diffusion
   diffServer = new OscP5(this,OSC_LISTENER_DIFFUSION_PORT);
   diffServerRemoteLocation = new NetAddress(OSC_LISTENER_DIFFUSION_ADDR,OSC_LISTENER_DIFFUSION_PORT);
@@ -72,6 +75,7 @@ void viewer3DTransfert(String addressPattern, String move) {
     gestureMsg.add(val); /* add an int to the osc message */
     // Envoie du message OSC au viewer3D
     oscSend(viewer3D, viewer3DRemoteLocation, gestureMsg);
+    oscSend(viewer3D2, viewer3D2RemoteLocation, gestureMsg);
     precedentMove = move;
   }
   
